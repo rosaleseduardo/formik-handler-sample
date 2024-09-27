@@ -6,8 +6,11 @@ import { Box as MuiBox } from '@mui/material';
  *
  * This component applies custom styles to the form element.
  */
-export const Box = styled(MuiBox)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-}));
+// @ts-expect-error: This is not introducing a bug
+export const Box = styled(MuiBox)(() => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+  };
+});

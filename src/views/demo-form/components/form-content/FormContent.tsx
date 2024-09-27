@@ -19,7 +19,7 @@ const FormContent = ({ debugMode = false }: FormDebugOption) => {
   const { formHandler } = useDemoFormContext();
 
   return (
-    <S.Box component="div" data-testid="form-container">
+    <S.Box data-testid="form-container">
       <TextField
         data-testid="name-input"
         name="name"
