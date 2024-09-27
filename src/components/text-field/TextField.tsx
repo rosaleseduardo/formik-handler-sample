@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FocusEvent, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import { withBaseField } from '@hocs';
 import { TextField as MUITextField, type TextFieldProps } from '@mui/material';
@@ -13,8 +13,6 @@ import { TextField as MUITextField, type TextFieldProps } from '@mui/material';
  * @returns A form-aware TextField component.
  */
 const BaseTextField = (props: TextFieldProps) => {
-  const [value, setValue] = useState<string>('');
-
   /**
    * A reference to the underlying HTML input element.
    *
@@ -22,26 +20,7 @@ const BaseTextField = (props: TextFieldProps) => {
    */
   const ref = useRef<HTMLInputElement>(null);
 
-  return (
-    <MUITextField
-      {...props}
-      ref={ref}
-      autoComplete="off"
-      value={value}
-      onChange={(
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      ) => {
-        setValue(event.target.value);
-
-        props.onChange?.(event);
-      }}
-      onBlur={(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setValue(event.target.value);
-
-        props.onBlur?.(event);
-      }}
-    />
-  );
+  return <MUITextField {...props} ref={ref} autoComplete="off" />;
 };
 
 /**
