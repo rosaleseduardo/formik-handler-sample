@@ -15,14 +15,27 @@ import type { BaseFieldProps } from '@interfaces';
  * @typeparam T - The type of Formik values.
  *
  * @param props - The properties to configure the form field.
+ * @param componentType - The type of component
  *
  * @returns An object containing handlers for `onChange` and `onBlur` events,
  * the current input value, and a method to set the initial value.
  */
 const useWithBaseField = <T extends FormikValues>(
   props: T & BaseFieldProps<T>,
+  componentType?: string,
 ) => {
   const [value, setValue] = useState<string>('');
+
+  const parseValue = (
+    input: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    switch (componentType) {
+      case 'TextField':
+        return input.target.value;
+      default:
+        return input;
+    }
+  };
 
   /**
    * A debounced version of the `onChange` function.
@@ -33,7 +46,7 @@ const useWithBaseField = <T extends FormikValues>(
         // This will update Formik's state
         await props.formhandler?.setFormValue({
           field: props.name,
-          value: input.target.value,
+          value: parseValue(input),
         });
 
         // This will update local input state
@@ -53,7 +66,7 @@ const useWithBaseField = <T extends FormikValues>(
         // This will update Formik's state
         await props.formhandler?.setFormValue({
           field: props.name,
-          value: input.target.value,
+          value: parseValue(input),
         });
 
         // This will update local input state

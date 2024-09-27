@@ -34,4 +34,4 @@ const BaseTextField = (props: TextFieldProps) => {
  *
  * @returns A form-aware TextField component.
  */
-export const TextField = withBaseField(BaseTextField);
+export const TextField = withBaseField(BaseTextField, 'TextField');

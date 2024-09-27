@@ -15,6 +15,7 @@ import type { BaseFieldProps } from '@interfaces';
  *
  * @param WrappedComponent - The React component to be enhanced with form
  * handling props.
+ * @param ComponentType - The type of component to be enhanced
  *
  * @typeParam T - The type of form values managed by the form handler.
  *
@@ -22,6 +23,7 @@ import type { BaseFieldProps } from '@interfaces';
  */
 const withBaseField = <T extends FormikValues>(
   WrappedComponent: React.FC<T>,
+  ComponentType: string,
 ) => {
   /**
    * The enhanced functional component with form handling capabilities.
@@ -38,7 +40,7 @@ const withBaseField = <T extends FormikValues>(
       value,
       handleBlur,
       handleChange,
-    } = useWithBaseField(props);
+    } = useWithBaseField(props, ComponentType);
 
     useEffect(() => {
       setInitialValue();
