@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { type ChangeEvent, type FocusEvent, useRef, useState } from 'react';
 
 import { withBaseField } from '@hocs';
 import { TextField as MUITextField, type TextFieldProps } from '@mui/material';
 
 /**
- * Custom TextField component that integrates with form handling utilities. Test
+ * Custom TextField component that integrates with form handling utilities.
  *
  * @typeParam T - The type of form values managed by the form handler.
  *
@@ -13,6 +13,8 @@ import { TextField as MUITextField, type TextFieldProps } from '@mui/material';
  * @returns A form-aware TextField component.
  */
 const BaseTextField = (props: TextFieldProps) => {
+  const [value, setValue] = useState<string>('');
+
   /**
    * A reference to the underlying HTML input element.
    *
@@ -20,7 +22,26 @@ const BaseTextField = (props: TextFieldProps) => {
    */
   const ref = useRef<HTMLInputElement>(null);
 
-  return <MUITextField {...props} ref={ref} autoComplete="off" />;
+  return (
+    <MUITextField
+      {...props}
+      ref={ref}
+      autoComplete="off"
+      value={value}
+      onChange={(
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => {
+        setValue(event.target.value);
+
+        props.onChange?.(event);
+      }}
+      onBlur={(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setValue(event.target.value);
+
+        props.onBlur?.(event);
+      }}
+    />
+  );
 };
 
 /**
@@ -34,4 +55,6 @@ const BaseTextField = (props: TextFieldProps) => {
  *
  * @returns A form-aware TextField component.
  */
-export const TextField = withBaseField(BaseTextField, 'TextField');
+const TextField = withBaseField(BaseTextField, 'TextField');
+
+export default TextField;
