@@ -80,19 +80,13 @@ const useFormHandler = <T extends FormikValues>(props: FormHandlerProps<T>) => {
    * @returns An object representing the state of the specified form field.
    */
   const fieldState = (field: string): FieldState => {
-    if (!manualValTriggered) {
-      const fieldIsVisitedAndInvalid =
-        Boolean(getPropPathValue(formInstance.touched, field)) && Boolean(getPropPathValue(formInstance.errors, field));
-
-      return {
-        invalid: fieldIsVisitedAndInvalid,
-        error: !fieldIsVisitedAndInvalid ? '' : (getPropPathValue(formInstance.errors, field) as string),
-      };
-    }
+    const fieldError = getPropPathValue(formInstance.errors, field) as string;
+    const fieldTouched = getPropPathValue(formInstance.touched, field);
+    const invalid = manualValTriggered ? Boolean(fieldError) : Boolean(fieldTouched && fieldError);
 
     return {
-      invalid: Boolean(getPropPathValue(formInstance.errors, field)),
-      error: getPropPathValue(formInstance.errors, field) as string,
+      invalid,
+      error: invalid ? fieldError : '',
     };
   };
 
